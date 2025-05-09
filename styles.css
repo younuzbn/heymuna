@@ -1,0 +1,145 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #000;
+  color: white;
+  overflow-x: hidden;
+}
+
+#particle-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 1;
+}
+
+.scroll-container {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  height: auto;
+  overflow-x: hidden;
+  padding-top: 12vh;
+}
+
+section {
+  width: 100%;
+  position: relative;
+}
+
+.section-1 {
+  height: 88vh;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.section-content {
+  width: 100%;
+  height: 25%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3%;
+  margin-bottom: 3%;
+}
+
+h2 {
+  color: white;
+  font-size: 2.8rem;
+  line-height: 1.2;
+  font-weight: normal;
+}
+
+.cta-button {
+  background-color: rgba(255, 255, 255, 0.3);
+  border: none;
+  padding: 5px 12px 5px 12px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+  font-size: 1.2rem;
+}
+
+.arrow-circle {
+  background-color: #858684;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.section-2 {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+h1 {
+  color: white;
+  font-size: 3rem;
+  text-align: center;
+  font-weight: normal;
+  line-height: 1.2;
+  margin-top: 10%;
+}
+
+.info-card {
+  position: absolute;
+  bottom: 10%;
+  left: 7%;
+  width: 29%;
+  height: 25%;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.card-title {
+  display: flex;
+  gap: 10px;
+}
+
+.we {
+  color: #818286;
+  font-size: 2.2rem;
+  font-weight: normal;
+}
+
+.think {
+  color: #35D867;
+  font-size: 2.2rem;
+  font-weight: normal;
+}
+
+.info-card p {
+  color: white;
+  font-size: 1rem;
+  margin-top: 20px;
+  line-height: 1.6;
+  font-weight: lighter;
+}
+
+.section-3 {
+  height: 100vh;
+} 
