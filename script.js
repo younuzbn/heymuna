@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Position camera - adjust based on screen size
   const isMobile = window.innerWidth < 768;
-  camera.position.z = isMobile ? 550 : 350; // Move camera further back on mobile
+  camera.position.z = isMobile ? 770 : 490; // Moved camera further back to accommodate larger shapes
   
   // Reference variables
   let particleSystem;
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let bulbPositions;
   let scatterDirections = [];
   const mouse = new THREE.Vector2();
-  const mouseSphere = new THREE.Sphere(new THREE.Vector3(0, 0, 0), 50);
+  const mouseSphere = new THREE.Sphere(new THREE.Vector3(0, 0, 0), 70);
   let isMouseActive = false;
   let isScattering = false;
   let scatterForce = 0;
@@ -33,13 +33,13 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Get responsive scale factor based on screen width
   const getResponsiveScale = () => {
-    // Base scale is 1 for desktop
-    let scale = 1;
+    // Base scale is 1.4 for desktop (40% larger than before)
+    let scale = 1.4;
     
-    // For smaller screens, reduce scale proportionally
+    // For smaller screens, reduce scale proportionally but still 40% larger
     if (window.innerWidth < 768) {
-      // Scale factor for mobile (roughly half the size on smallest phones)
-      scale = Math.max(0.5, window.innerWidth / 768);
+      // Scale factor for mobile (roughly half the size on smallest phones but 40% larger)
+      scale = Math.max(0.7, (window.innerWidth / 768) * 1.4);
     }
     
     return scale;
@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Get responsive scale for MUNA shape scaling
     const responsiveScale = getResponsiveScale();
-    const munaScaleFactor = isMobile ? 1.5 : 2.1; // Smaller scaling for mobile
+    const munaScaleFactor = isMobile ? 2.1 : 2.94; // Increased by 40% from previous values (1.5 * 1.4 = 2.1, 2.1 * 1.4 = 2.94)
     
     // Fill both position arrays
     for (let i = 0; i < logoPoints.length; i++) {
@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
     particles.setAttribute('color', new THREE.BufferAttribute(colors, 3));
     
     // Adjust particle size based on screen size
-    const particleSize = isMobile ? 1.2 : 1.7;
+    const particleSize = isMobile ? 1.7 : 2.4; // Increased by 40% (1.2 * 1.4 = 1.7, 1.7 * 1.4 = 2.4)
     
     const particleMaterial = new THREE.PointsMaterial({
       size: particleSize,
@@ -333,7 +333,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Update camera position if mobile state changed
     if (newIsMobile !== isMobile) {
-      camera.position.z = newIsMobile ? 550 : 350;
+      camera.position.z = newIsMobile ? 770 : 490;
     }
     
     camera.aspect = window.innerWidth / window.innerHeight;
