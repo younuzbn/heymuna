@@ -12,8 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
   renderer.setClearColor(0x000000, 0);
   container.appendChild(renderer.domElement);
   
-  // Position camera
-  camera.position.z = 350;
+  // Position camera - adjust based on screen size
+  const isMobile = window.innerWidth < 768;
+  camera.position.z = isMobile ? 550 : 350; // Move camera further back on mobile
   
   // Reference variables
   let particleSystem;
@@ -29,6 +30,20 @@ document.addEventListener('DOMContentLoaded', () => {
   let shouldReform = true;
   let currentScrollPosition = 0;
   let inSection2 = false;
+  
+  // Get responsive scale factor based on screen width
+  const getResponsiveScale = () => {
+    // Base scale is 1 for desktop
+    let scale = 1;
+    
+    // For smaller screens, reduce scale proportionally
+    if (window.innerWidth < 768) {
+      // Scale factor for mobile (roughly half the size on smallest phones)
+      scale = Math.max(0.5, window.innerWidth / 768);
+    }
+    
+    return scale;
+  };
   
   // SVG paths for HEY logo (replaces the original logo)
   const logoPaths = [
@@ -74,13 +89,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const xOffset = svgWidth / 2;
     const yOffset = svgHeight / 2;
     
+    // Get responsive scale for mobile
+    const responsiveScale = getResponsiveScale();
+    
     for (let y = 0; y < offscreenCanvas.height; y += gridSpacing) {
       for (let x = 0; x < offscreenCanvas.width; x += gridSpacing) {
         const i = (y * offscreenCanvas.width + x) * 4;
         if (imgData.data[i] > 0) {
           validPoints.push({
-            x: x / 3 - xOffset + randomOffset(),
-            y: -y / 3 + yOffset + randomOffset()
+            x: (x / 3 - xOffset + randomOffset()) * responsiveScale,
+            y: (-y / 3 + yOffset + randomOffset()) * responsiveScale
           });
         }
       }
@@ -116,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const imgData = context.getImageData(0, 0, offscreenCanvas.width, offscreenCanvas.height);
     const validPoints = [];
     
-    const gridSpacing = 10;
+    const gridSpacing = 7;
     
     const randomOffset = () => (Math.random() - 0.5) * gridSpacing * 0.0;
     
@@ -126,13 +144,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const xOffset = svgWidth / 2;
     const yOffset = svgHeight / 2;
     
+    // Get responsive scale for mobile
+    const responsiveScale = getResponsiveScale();
+    
     for (let y = 0; y < offscreenCanvas.height; y += gridSpacing) {
       for (let x = 0; x < offscreenCanvas.width; x += gridSpacing) {
         const i = (y * offscreenCanvas.width + x) * 4;
         if (imgData.data[i] > 0) {
           validPoints.push({
-            x: x / 3 - xOffset + randomOffset(),
-            y: -y / 3 + yOffset + randomOffset()
+            x: (x / 3 - xOffset + randomOffset()) * responsiveScale,
+            y: (-y / 3 + yOffset + randomOffset()) * responsiveScale
           });
         }
       }
@@ -155,6 +176,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const colors = new Float32Array(logoPoints.length * 3);
     originalPositions = new Float32Array(logoPoints.length * 3);
     bulbPositions = new Float32Array(logoPoints.length * 3);
+    
+    // Get responsive scale for MUNA shape scaling
+    const responsiveScale = getResponsiveScale();
+    const munaScaleFactor = isMobile ? 1.5 : 2.1; // Smaller scaling for mobile
     
     // Fill both position arrays
     for (let i = 0; i < logoPoints.length; i++) {
@@ -189,16 +214,19 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       
       // MUNA positions for morphing - scale and center
-      bulbPositions[i * 3] = munaPoint.x * 2.1; // Increased scale from 0.7 to 1.1 for better size match
-      bulbPositions[i * 3 + 1] = munaPoint.y * 2.1; // Increased scale from 0.7 to 1.1
+      bulbPositions[i * 3] = munaPoint.x * munaScaleFactor; // Scaled for mobile
+      bulbPositions[i * 3 + 1] = munaPoint.y * munaScaleFactor; // Scaled for mobile
       bulbPositions[i * 3 + 2] = 0;
     }
     
     particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     particles.setAttribute('color', new THREE.BufferAttribute(colors, 3));
     
+    // Adjust particle size based on screen size
+    const particleSize = isMobile ? 1.2 : 1.7;
+    
     const particleMaterial = new THREE.PointsMaterial({
-      size: 1.7,
+      size: particleSize,
       vertexColors: true,
       transparent: true,
       opacity: 1.0,
@@ -301,13 +329,37 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   
   const handleResize = () => {
+    const newIsMobile = window.innerWidth < 768;
+    
+    // Update camera position if mobile state changed
+    if (newIsMobile !== isMobile) {
+      camera.position.z = newIsMobile ? 550 : 350;
+    }
+    
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
     
+    // If screen size changes significantly, recreate particle system
+    if (Math.abs(window.innerWidth - lastWidth) > 200) {
+      // Remove old particle system
+      if (particleSystem) {
+        scene.remove(particleSystem);
+        particleSystem.geometry.dispose();
+        particleSystem.material.dispose();
+      }
+      
+      // Create new properly scaled particle system
+      createParticleSystem();
+      lastWidth = window.innerWidth;
+    }
+    
     // Recalculate reform points on resize
     checkShouldReform();
   };
+  
+  // Keep track of screen width for resize handling
+  let lastWidth = window.innerWidth;
   
   // Add event listeners
   window.addEventListener('mousemove', handleMouseMove);

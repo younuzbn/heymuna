@@ -9,6 +9,8 @@ body {
   background-color: #000;
   color: white;
   overflow-x: hidden;
+  width: 100%;
+  position: relative;
 }
 
 #particle-container {
@@ -18,6 +20,7 @@ body {
   width: 100%;
   height: 100vh;
   z-index: 1;
+  overflow: hidden;
 }
 
 .scroll-container {
@@ -49,6 +52,7 @@ section {
   justify-content: space-between;
   padding: 0 3%;
   margin-bottom: 3%;
+  flex-wrap: wrap;
 }
 
 h2 {
@@ -142,4 +146,67 @@ h1 {
 
 .section-3 {
   height: 100vh;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  h1 {
+    font-size: 2.2rem;
+    margin-top: 15%;
+  }
+  
+  .cta-button {
+    font-size: 1rem;
+    padding: 5px 10px;
+  }
+  
+  .arrow-circle {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .section-content {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    height: auto;
+  }
+  
+  .info-card {
+    width: 86%;
+    left: 7%;
+    height: auto;
+    bottom: 8%;
+  }
+  
+  .we, .think {
+    font-size: 1.8rem;
+  }
+  
+  .info-card p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  h2 {
+    font-size: 1.6rem;
+  }
+  
+  h1 {
+    font-size: 1.8rem;
+  }
+  
+  .we, .think {
+    font-size: 1.5rem;
+  }
+  
+  .info-card p {
+    font-size: 0.8rem;
+  }
 } 
